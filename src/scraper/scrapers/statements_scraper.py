@@ -14,7 +14,7 @@ from utils.extractors import (
     get_year_pages_2000_2019
 )
 
-STATEMENTS_DIR = 'Deep_learning_gold_stock/data/raw/text/statements'
+STATEMENTS_DIR = 'data/raw/text/statements'
 STATEMENTS_METADATA_CSV = os.path.join(STATEMENTS_DIR, "metadata.csv")
 
 # --------------------------------------------------
