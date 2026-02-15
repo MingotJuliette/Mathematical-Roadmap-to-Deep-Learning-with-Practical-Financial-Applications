@@ -15,7 +15,7 @@ from utils.extractors import (
     get_proj_links_from_press_conf
 )
 
-PROJECTIONS_DIR = 'Deep_learning_gold_stock/data/raw/text/projections'
+PROJECTIONS_DIR = 'data/raw/text/projections'
 PROJECTIONS_METADATA_CSV = os.path.join(PROJECTIONS_DIR, "metadata.csv")
 
 # projections_scraper.py
