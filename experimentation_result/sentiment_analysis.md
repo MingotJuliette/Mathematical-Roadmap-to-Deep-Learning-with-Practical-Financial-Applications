@@ -145,14 +145,14 @@ Sentiment features are extracted from **FOMC Statements** and **Projections** us
 
 To capture **temporal dynamics**:
 
-* First differences (`Δ`) of Hawkishness, Document Shift, and Intra-document Variance are calculated.
-* Interaction terms, e.g., `ΔHawkishness × ΔDocShift`, are included to capture nonlinear relationships.
+* First differences ($\Delta$) of Hawkishness, Document Shift, and Intra-document Variance are calculated.
+* Interaction terms, e.g., `D_Hawkishness × D_DocShift`, are included to capture nonlinear relationships.
 
 ```python
-df[f"{doc_type}_ΔHawkishness"] = df[f"FOMC_{doc_type}_Hawkishness"].diff()
-df[f"{doc_type}_ΔDocShift"] = df[f"FOMC_{doc_type}_DocShift"].diff()
-df[f"{doc_type}_ΔHawkishness_x_ΔDocShift"] = \
-    df[f"{doc_type}_ΔHawkishness"] * df[f"{doc_type}_ΔDocShift"]
+df[f"{doc_type}_$Delta$_Hawkishness"] = df[f"FOMC_{doc_type}_Hawkishness"].diff()
+df[f"{doc_type}_$Delta$_DocShift"] = df[f"FOMC_{doc_type}_DocShift"].diff()
+df[f"{doc_type}_$Delta$_Hawkishness_x_$Delta$_DocShift"] = \
+    df[f"{doc_type}_$Delta$_Hawkishness"] * df[f"{doc_type}_$Delta$_DocShift"]
 ```
 
 ---
@@ -215,14 +215,14 @@ Here’s a markdown-style commentary on the results, structured as if the graphs
 The OLS regression for `MOVE_monthly_avg` retained four sentiment-related variables:
 
 * **FOMC_Projection_IntraDocVar**
-* **Statement_ΔHawkishness_x_ΔDocShift**
+* **Statement_$Delta$_Hawkishness_x_$Delta$_DocShift**
 * **FOMC_Statement_DocShift**
 * **FOMC_Statement_IntraDocVar**
 
 The model explains a substantial portion of variance with an **R² of 0.628**. Key observations from the coefficients:
 
 * `FOMC_Projection_IntraDocVar` has a **strong negative effect**, suggesting that larger intra-document variability in projections is associated with lower MOVE levels.
-* `Statement_ΔHawkishness_x_ΔDocShift` shows a **strong positive impact**, indicating that changes in hawkishness combined with document shifts significantly increase MOVE.
+* `Statement_$Delta$_Hawkishness_x_$Delta$_DocShift` shows a **strong positive impact**, indicating that changes in hawkishness combined with document shifts significantly increase MOVE.
 * `FOMC_Statement_DocShift` and `FOMC_Statement_IntraDocVar` also show positive and significant contributions, albeit smaller in magnitude.
 
 The intra-month impact chart illustrates that the **cumulative MOVE response around FOMC statements is concentrated within the announcement window**, confirming the immediate effect of sentiment variables rather than a delayed response.
