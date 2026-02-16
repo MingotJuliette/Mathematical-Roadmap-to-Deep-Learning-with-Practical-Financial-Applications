@@ -113,10 +113,10 @@ def creat_data(df_1, df_2, index, name) : # GC=F ^MOVE
     return merged_monthly, merged, data
 
 # 4. LOAD SENTIMENT DATA
-Statement_df = pd.read_pickle("Deep_learning_gold_stock/data/processed/statements_embedding.pkl").iloc[1:, -3:]
+Statement_df = pd.read_pickle("data/processed/statements_embedding.pkl").iloc[1:, -3:]
 Statement_df.index = pd.to_datetime(Statement_df.index)
 
-Projection_df = pd.read_pickle("Deep_learning_gold_stock/data/processed/projections_embedding.pkl").iloc[1:, -3:]
+Projection_df = pd.read_pickle("data/processed/projections_embedding.pkl").iloc[1:, -3:]
 Projection_df.index = pd.to_datetime(Projection_df.index)
 
 # Garder seulement les variables corrélées avec MOVE_monthly_avg (comme déjà fait)
