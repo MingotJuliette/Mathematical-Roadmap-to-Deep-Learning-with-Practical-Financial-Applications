@@ -123,9 +123,9 @@ best_val_loss = float('inf')
 patience = 15
 counter = 0
 
-train_validation("RNN/model/LSTM_2d_IXIC.pt", EPOCHS, model_1, DEVICE, optimizer, criterion, test_dataset,train_dataset,train_loader,test_loader,GRAD_CLIP, patience, best_val_loss)
-train_validation("RNN/model/GRU_2d_IXIC.pt", EPOCHS, model_2, DEVICE, optimizer, criterion, test_dataset,train_dataset,train_loader,test_loader,GRAD_CLIP, patience, best_val_loss)
-train_validation("RNN/model/ODERNN_2d_IXIC.pt", EPOCHS, model_3, DEVICE, optimizer, criterion, test_dataset,train_dataset,train_loader,test_loader,GRAD_CLIP, patience, best_val_loss)
+train_validation("Deep_learning_RNN_sentiment/data/raw/model/LSTM_2d_IXIC.pt", EPOCHS, model_1, DEVICE, optimizer, criterion, test_dataset,train_dataset,train_loader,test_loader,GRAD_CLIP, patience, best_val_loss)
+train_validation("Deep_learning_RNN_sentiment/data/raw/model/GRU_2d_IXIC.pt", EPOCHS, model_2, DEVICE, optimizer, criterion, test_dataset,train_dataset,train_loader,test_loader,GRAD_CLIP, patience, best_val_loss)
+train_validation("Deep_learning_RNN_sentiment/data/raw/model/ODERNN_2d_IXIC.pt", EPOCHS, model_3, DEVICE, optimizer, criterion, test_dataset,train_dataset,train_loader,test_loader,GRAD_CLIP, patience, best_val_loss)
 
 # --------------------------------------------
 # Result Validation models
