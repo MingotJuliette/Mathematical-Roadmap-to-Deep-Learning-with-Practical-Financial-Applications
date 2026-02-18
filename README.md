@@ -1,6 +1,4 @@
-<div style="
-  background:#00008B;color:#fff;padding:12px 16px;border-radius:12px;font-weight:800;font-size:2rem;text-align:center;padding:20px;width:100%;
-"> Deep Learning Mathematical Roadmap & Applications</div>
+# **Deep Learning Mathematical Roadmap & Applications**
 
 ## Overview
 
@@ -35,16 +33,7 @@ The project is divided into **two main modules**: time series forecasting and tr
 
 ---
 
-<div style="
-  background:#bbf7d0;   /* vert pâle */
-  color:#000;           /* texte noir */
-  font-weight:750;      /* gras mais un peu moins fort que le titre */
-  font-size:1.7rem;     /* plus petit qu'un H1 */
-  text-align:center;     /* texte à droite */
-  padding:12px 16px;
-  width:100%;
-">
-  RNNs & Short-Term Volatility Forecasting
+# RNNs & Short-Term Volatility Forecasting
 </div>
 
 ### Theoretical Roadmap
@@ -109,16 +98,7 @@ The calibrated forecast is translated into dynamic exposure via quantile-based l
 * Forecasting improves variance predictability but does **not** yield superior portfolio efficiency.
 * The signal serves primarily as a **risk-scaling mechanism**, not alpha generation.
 ---
-<div style="
-  background:#bbf7d0;   /* vert pâle */
-  color:#000;           /* texte noir */
-  font-weight:750;      /* gras mais un peu moins fort que le titre */
-  font-size:1.7rem;     /* plus petit qu'un H1 */
-  text-align:center;     /* texte à droite */
-  padding:12px 16px;
-  width:100%;
-">
-Transformer Models & Financial Sentiment Analysis
+# Transformer Models & Financial Sentiment Analysis
 </div>
 
 ### Theoretical Roadmap
