@@ -116,6 +116,13 @@ model_1 = LSTMModel(input_dim=X_train.shape[2], hidden_dim=HIDDEN_DIM,num_layers
 model_2 = GRUModel(input_dim=X_train.shape[2], hidden_dim=HIDDEN_DIM, num_layers=NUM_LAYERS, dropout=DROPOUT).to(DEVICE)
 model_3 = ODE_RNN(X_tensor.shape[2], HIDDEN_DIM).to(DEVICE)
 
+criterion = nn.HuberLoss(delta=1.0) #loss function : Hubert
+optimizer = optim.Adam(model.parameters(), lr=LR, weight_decay=1e-4) # Fro backpropagation
+
+best_val_loss = float('inf')
+patience = 15
+counter = 0
+
 train_validation("RNN/model/LSTM_2d_IXIC.pt", EPOCHS, model_1, DEVICE, optimizer, criterion, test_dataset,train_dataset,train_loader,test_loader,GRAD_CLIP, patience, best_val_loss)
 train_validation("RNN/model/GRU_2d_IXIC.pt", EPOCHS, model_2, DEVICE, optimizer, criterion, test_dataset,train_dataset,train_loader,test_loader,GRAD_CLIP, patience, best_val_loss)
 train_validation("RNN/model/ODERNN_2d_IXIC.pt", EPOCHS, model_3, DEVICE, optimizer, criterion, test_dataset,train_dataset,train_loader,test_loader,GRAD_CLIP, patience, best_val_loss)
@@ -287,7 +294,7 @@ print(f"Strategy Sharpe: {sharpe_s:.4f}, Sortino: {sortino_s:.4f}, Calmar: {calm
 print(f"Buy & Hold Sharpe: {sharpe_b:.4f}, Sortino: {sortino_b:.4f}, Calmar: {calmar_b:.4f}")
 print(f"Strategy Vol: {vol_s:.4f}, Buy & Hold Vol: {vol_b:.4f}")
 
-# --- Visualisation cumulative ---
+# Visualisation cumulative
 cum_strategy = np.cumsum(strategy_vt_returns_hybrid)
 cum_bh = np.cumsum(buyhold_returns)
 
