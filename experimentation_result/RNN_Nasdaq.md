@@ -43,8 +43,6 @@ where $\varepsilon$ is a small numerical constant for stability.
 
 This choice is therefore partly data-driven and constrained by intraday data availability.
 
-*(Optional: include a graph of `log_future_var_2` here for visualization.)*
-
 ---
 
 ## Feature Choice Justification
