@@ -6,10 +6,10 @@ import torch
 from torch.utils.data import DataLoader, TensorDataset
 import numpy as np
 import matplotlib.pyplot as plt
-from Mathematical_roadmap_to_Deep_Learning_with_Pratical_Financial_Applications.src.models.RNN.GRU import GRUModel
-from Mathematical_roadmap_to_Deep_Learning_with_Pratical_Financial_Applications.src.models.RNN.ODERNN import ODE_RNN
-from Mathematical_roadmap_to_Deep_Learning_with_Pratical_Financial_Applications.src.models.RNN.LSTM import LSTMModel
-from Mathematical_roadmap_to_Deep_Learning_with_Pratical_Financial_Applications.src.models.RNN.main import eval_pred, evaluate_model, train_validation
+from Deep_learning_RNN_sentiment.src.models.RNN.GRU import GRUModel
+from Deep_learning_RNN_sentiment.src.models.RNN.ODERNN import ODE_RNN
+from Deep_learning_RNN_sentiment.src.models.RNN.LSTM import LSTMModel
+from Deep_learning_RNN_sentiment.src.models.RNN.main import eval_pred, evaluate_model, train_validation
 import statsmodels.api as sm
 from statsmodels.graphics.tsaplots import plot_acf
 from sklearn.metrics import mean_squared_error, r2_score
