@@ -1,18 +1,20 @@
-# Mathematical Roadmap to Deep Learning with Practical Financial Applications
+<div style="
+  background:#00008B;color:#fff;padding:12px 16px;border-radius:12px;font-weight:800;font-size:2rem;text-align:center;padding:20px;width:100%;
+"> Deep Learning Mathematical Roadmap & Applications</div>
 
 ## Overview
 
-This project provides an **educational roadmap for deep learning models**, highlighting both their **mathematical foundations** and **practical applications** in financial and textual data analysis.
+This project provides an **roadmap for deep learning models**, highlighting both their **mathematical foundations** and **practical applications** in financial and textual data analysis.
 
 ### Motivation
 
-* **RNNs & Short-Term Bitcoin Forecasting:** Cryptocurrencies are highly volatile and nonlinear. RNN-based models effectively capture historical dependencies, supporting short-term trading and risk management strategies.
-* **Transformer Models & Financial Sentiment Analysis:** Financial markets, including gold and interest rate indices, are influenced by investor expectations, macroeconomic news, and policy announcements.
+* **RNNs & Short-Term Volatility Forecasting:** Financial markets exhibit volatility clustering, abrupt regime shifts, and heteroskedasticity. Traditional linear models such as GARCH(1,1) fail to capture intraday nonlinear dynamics. RNN-based models (LSTM, GRU, ODE-RNN) can learn temporal dependencies and incorporate multiple explanatory features to improve short-term volatility predictions for tactical allocation and risk management.
+* **Transformer Models & Financial Sentiment Analysis:** Market behavior, including gold and interest rate indices, is sensitive to investor expectations, macroeconomic news, and policy announcements. Transformers provide efficient contextual embedding for textual analysis.
 
 ### Objectives
 
 * Present key deep learning models with their **mathematical formulations**.
-* Demonstrate applications in **financial forecasting** and **sentiment analysis**.
+* Demonstrate applications in **financial volatility forecasting** and **sentiment analysis**.
 * Compare model performance using standard evaluation metrics.
 
 The project is divided into **two main modules**: time series forecasting and transformer-based sentiment analysis.
@@ -27,13 +29,23 @@ The project is divided into **two main modules**: time series forecasting and tr
 
 ## Experimentation Results
 
-* [ResNet Gradient Flow](experimentation_result/gradient_flow.md) – Investigates how skip connections alleviate vanishing gradients.
-* [RNN on Bitcoin](experimentation_result/RNN_Bitcoin.md) – Predicts short-term Bitcoin price movements using sequential models.
+* [ResNet Gradient Flow](experimentation_result/gradient_flow.md) – Explores how skip connections mitigate vanishing gradients.
+* [RNN on Bitcoin & Nasdaq Volatility](experimentation_result/RNN_Bitcoin.md) – Predicts short-term Bitcoin returns and Nasdaq intraday volatility using sequential models.
 * [Financial Sentiment Analysis](experimentation_result/sentiment_analysis.md) – Evaluates document embeddings on gold and MOVE market indices.
 
 ---
 
-## Part I: RNNs & Short-Term Bitcoin Forecasting
+<div style="
+  background:#bbf7d0;   /* vert pâle */
+  color:#000;           /* texte noir */
+  font-weight:750;      /* gras mais un peu moins fort que le titre */
+  font-size:1.7rem;     /* plus petit qu'un H1 */
+  text-align:center;     /* texte à droite */
+  padding:12px 16px;
+  width:100%;
+">
+  RNNs & Short-Term Volatility Forecasting
+</div>
 
 ### Theoretical Roadmap
 
@@ -49,25 +61,65 @@ The project is divided into **two main modules**: time series forecasting and tr
 
 **Focus:** Intuitive explanations, derivations, and a roadmap of knowledge for sequential modeling.
 
-### Application
+---
 
-* **Goal:** Predict short-term Bitcoin log returns
-* **Models:** LSTM, GRU, ODE-RNN
-* **Input:** Historical Bitcoin prices
-* **Evaluation:** RMSE, MAE, $R^2$
+### Application: Nasdaq Intraday Volatility Forecasting
 
-### Results
+* **Goal:** Predict 5-minute ahead log variance of Nasdaq Composite returns ($t+2$ horizon).
 
-| Prediction                                                       | Forecast                                                       |
-| ---------------------------------------------------------------- | -------------------------------------------------------------- |
-| ![ODE-RNN Prediction](experimentation_result/figure/ODE-RNN.png) | ![LSTM Forecast](experimentation_result/figure/forcasting.png) |
+* **Input Features:** Rolling realized volatility, high-low range, VIX, intraday returns, and derived volatility features.
 
-**Observation:**
-The ODE-RNN achieves strong statistical accuracy (low MSE/MAE, high R²). However, multi-step forecasts accumulate small negative log-return biases, producing monotonically decreasing price predictions. Future improvements could focus on bias correction or trend-aware multi-step forecasting.
+* **Baseline:** GARCH(1,1) for comparison:
+  $$\sigma_t^2 = \omega + \alpha , \epsilon_{t-1}^2 + \beta , \sigma_{t-1}^2$$
+  Poor baseline metrics (MSE ≈ 347.55, R² ≈ –50.42) justify using RNN architectures.
+
+* **LSTM** : notably outperforms the GARCH(1,1) baseline in both MSE = 0.86 and R² = 0.13, and is therefore selected as the core model for the subsequent volatility timing strategy.
 
 ---
 
-## Part II: Transformer Models & Financial Sentiment Analysis
+### Volatility Timing Strategy
+
+The calibrated forecast is translated into dynamic exposure via quantile-based leverage. Returns are shifted by $t+2$ to avoid look-ahead bias.
+
+**Quantile-Based Leverage Rule:**
+
+| Lowest 20% | 20–40% | 40–60% | 60–80% | Highest 20% |
+| ---------- | ------ | ------ | ------ | ----------- |
+| 1.5        | 1.3    | 1.0    | 0.7    | 0.6         |
+
+* Low predicted volatility → higher leverage.
+* High predicted volatility → reduced exposure.
+* Smoothed over time: $w_t^{smooth} = \alpha w_t + (1-\alpha) w_{t-1}^{smooth}$ to reduce turnover.
+
+**Performance Comparison:**
+
+| Strategy                            | Sharpe | Sortino | Calmar | Volatility |
+| ----------------------------------- | ------ | ------- | ------ | ---------- |
+| Volatility Timing (Quantile+Smooth) | 0.3804 | 0.4882  | 0.2059 | 0.0097     |
+| Buy & Hold                          | 0.4327 | 0.5741  | 0.2831 | 0.0086     |
+
+| Strategy                                                       | Forecast                                                       |
+| ---------------------------------------------------------------- | -------------------------------------------------------------- |
+| ![ODE-RNN Prediction](experimentation_result/figure/strategy.png) | ![LSTM Forecast](experimentation_result/figure/forecast_after.png) |
+
+**Key Observations:**
+
+* Buy & Hold dominates across risk-adjusted metrics.
+* Volatility timing increases realized volatility slightly.
+* Forecasting improves variance predictability but does **not** yield superior portfolio efficiency.
+* The signal serves primarily as a **risk-scaling mechanism**, not alpha generation.
+---
+<div style="
+  background:#bbf7d0;   /* vert pâle */
+  color:#000;           /* texte noir */
+  font-weight:750;      /* gras mais un peu moins fort que le titre */
+  font-size:1.7rem;     /* plus petit qu'un H1 */
+  text-align:center;     /* texte à droite */
+  padding:12px 16px;
+  width:100%;
+">
+Transformer Models & Financial Sentiment Analysis
+</div>
 
 ### Theoretical Roadmap
 
@@ -79,35 +131,64 @@ The ODE-RNN achieves strong statistical accuracy (low MSE/MAE, high R²). Howeve
 
 ### Application
 
-* **Goal:** Analyze sentiment in FOMC statements and impact on MOVE index returns.
-* **Process:**
+* **Goal:** Quantify the short-term impact of FOMC statements and projections on MOVE Index and gold prices using hierarchical FinBERT embeddings. Focus is on **intra-month effects** rather than long-term forecasting.
 
-  1. Scrape documents (`scraper/`)
-  2. Generate embeddings with `embedding.py`
+* **Input Features:**
 
-     * **DocShift** – change in document sentiment
-     * **IntraDocVar** – intra-document variability
-     * **Hawkishness** – central bank tone indicator
-  3. Perform Bayesian regression for short-term prediction
+  * **Hawkishness:** Contractionary tone measured via FinBERT sentiment probabilities.
+  * **Document Shift:** Cosine distance between consecutive document embeddings.
+  * **Intra-document Variance:** Dispersion across paragraph embeddings.
+  * **Temporal Deltas & Interactions:** First differences ($\Delta$) and interaction terms (e.g., D_Hawkishness × D_DocShift) to capture short-term dynamics.
 
-### Results
+* **Baseline:** Simple monthly averages of MOVE and gold prices without sentiment features. Shows weak correlation with market movements, justifying the hierarchical embedding approach.
 
-| Horizon | Model       | OOS Accuracy | Baseline Accuracy |
-| ------- | ----------- | ------------ | ----------------- |
-| 5-day   | Logistic_L2 | 0.7059       | 0.7059            |
-| 5-day   | Logistic_L1 | 0.7059       | 0.7059            |
-| 5-day   | LinearSVC   | 0.7059       | 0.7059            |
-| 5-day   | GaussianNB  | 0.3529       | 0.7059            |
-| 10-day  | Logistic_L2 | 0.8235       | 0.8235            |
-| 10-day  | Logistic_L1 | 0.8235       | 0.8235            |
-| 10-day  | LinearSVC   | 0.7647       | 0.8235            |
-| 10-day  | GaussianNB  | 0.2941       | 0.8235            |
+* **Hierarchical Embedding Method:** Token → Chunk → Paragraph → Document mean pooling ensures robust representations of long texts exceeding BERT’s 512-token limit.
 
-**Observation:**
+---
 
-* Logistic Regression and LinearSVC perform best for 10-day horizons.
-* GaussianNB struggles due to correlated features.
-* The analysis highlights that **FOMC statement metrics contain limited but measurable predictive signals** for short-term market movements.
+### Market Impact Analysis
+
+**Monthly Alignment:** Market indices aggregated to month-level averages, mid-month reference ±2 days to handle non-trading days.
+
+**Event Window Analysis:** ±1–2 days around FOMC releases to assess **immediate market reactions**.
+
+**Forward Stepwise OLS Regression:**
+
+* Train/test split: 80%/20%
+* Variables added based on p-value (`p < 0.05`)
+* Focus on **current month market responses**
+
+| Target      | Selected Sentiment Variables                                                                        | R²    |
+| ----------- | --------------------------------------------------------------------------------------------------- | ----- |
+| MOVE Index  | Projection_IntraDocVar, Statement_D_Hawkishness×D_DocShift, Statement_DocShift, Statement_IntraDocVar | 0.628 |
+| Gold Prices | Projection_Hawkishness, Projection_IntraDocVar, Statement_Hawkishness                               | 0.408 |
+
+---
+
+### Key Observations
+
+* **MOVE Index:** Strong response to intra-document variability and combined hawkishness × document shift changes. Reaction occurs **within announcement day**, confirming rapid sentiment transmission.
+* **Gold Prices:** Moderate response, primarily to hawkish projections. Statement hawkishness has a negative short-term effect, reflecting risk-adjustment behavior.
+* **Intra-month Analysis:** Cumulative returns around FOMC releases show **immediate effects**, validating the event-driven approach over monthly averaging.
+
+| Target      | Impact Illustration                         |
+| ----------- | ------------------------------------------- |
+| MOVE Index  | ![intra MOVE](experimentation_result/figure/impact_intra_MOVE.png) |
+| Gold Prices | ![intra GOLD](experimentation_result/figure/impact_intra_gold.png) |
+
+---
+
+**Key Insights:**
+
+* Hierarchical embeddings capture semantic nuances in long FOMC documents effectively.
+* Sentiment variables explain significant short-term market variance, especially in interest-rate sensitive instruments.
+* Supports **event-based risk monitoring** rather than traditional forecasting models.
+
+---
+
+If you want, I can also create a **compact, fully README-ready Markdown block** that matches your formatting with all code snippets, equations, and tables ready to drop in—so it visually mirrors the Volatility Forecasting section exactly. Do you want me to do that?
+
+
 
 ---
 
@@ -120,7 +201,7 @@ The ODE-RNN achieves strong statistical accuracy (low MSE/MAE, high R²). Howeve
 | `ODERNN.py`             | Continuous-time sequence modeling                |
 | `ResNet.py`             | Investigate skip connections & gradient issues   |
 | `embedding.py`          | Generate document embeddings & sentiment metrics |
-| `statement_analysis.py` | Predict short-term movements in MOVE or gold     |
+| `analysis.py` | Predict short-term movements in MOVE or gold     |
 | `main.py`               | Data scraping and preprocessing                  |
 
 ---
