@@ -38,7 +38,7 @@ The project is divided into **two main modules**: time series forecasting and tr
 
 * **Input Features:** Rolling realized volatility, high-low range, VIX, intraday returns, and derived volatility features.
 
-* **Baseline:** GARCH(1,1) for comparison:
+* **Baseline:** `GARCH(1,1)` for comparison:
   $$\sigma_t^2 = \omega + \alpha , \epsilon_{t-1}^2 + \beta , \sigma_{t-1}^2$$
   Poor baseline metrics (MSE ≈ 347.55, R² ≈ –50.42) justify using RNN architectures.
 
@@ -78,20 +78,6 @@ The calibrated forecast is translated into dynamic exposure via quantile-based l
 * Forecasting improves variance predictability but does **not** yield superior portfolio efficiency.
 * The signal serves primarily as a **risk-scaling mechanism**, not alpha generation.
  
-### Theoretical Roadmap
-
-| Model               | Key Features                                 | Mathematical Insight                      |
-| ------------------- | -------------------------------------------- | ----------------------------------------- |
-| **MLP**             | Foundation of deep learning                  | $y = f(Wx + b)$                           |
-| **Backpropagation** | Optimizes network via gradient descent       | Chain rule across layers                  |
-| **RNN**             | Sequential dependencies                      | $h_t = σ(W_h h_{t-1} + W_x x_t + b)$      |
-| **LSTM**            | Long-term dependency retention               | $c_t = f_t ⊙ c_{t-1} + i_t ⊙ \tilde{c}_t$ |
-| **GRU**             | Simplified LSTM                              | Combined gates, fewer parameters          |
-| **ResNet**          | Skip connections prevent vanishing gradients | $y = F(x, W_i) + x$                       |
-| **ODE-RNN**         | Continuous-time sequence modeling            | $dh/dt = f(h, t)$                         |
-
-**Focus:** Intuitive explanations, derivations, and a roadmap of knowledge for sequential modeling.
-
 ---
 ## Application : Transformer Models & Financial Sentiment 
 
@@ -138,17 +124,6 @@ The calibrated forecast is translated into dynamic exposure via quantile-based l
 * Hierarchical embeddings capture semantic nuances in long FOMC documents effectively.
 * Sentiment variables explain significant short-term market variance, especially in interest-rate sensitive instruments.
 * Supports **event-based risk monitoring** rather than traditional forecasting models.
-
-
-### Theoretical Roadmap
-
-| Model                     | Key Features                          | Core Equation                                  |
-| ------------------------- | ------------------------------------- | ---------------------------------------------- |
-| **Transformer (Encoder)** | Self-attention, sequence dependencies | `Attention(Q,K,V) = softmax(Q^T K / √d_k) V`   |
-| **BERT**                  | Pre-trained contextual embeddings     | Masked LM & Next Sentence Prediction           |
-| **FinBERT**               | Domain-adapted BERT for finance       | Specialized embeddings for financial sentiment |
-
----
 
 ---
 
