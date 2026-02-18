@@ -1,6 +1,6 @@
 import pandas as pd
 import matplotlib.pyplot as plt
-from Deep_learning_gold_stock.src.sentiment_analysis.main import creat_data, forward_stepwise_ols_train_test
+from Deep_learning_RNN_sentiment.src.sentiment_analysis.main import creat_data, forward_stepwise_ols_train_test
 # ----------------------------------------------
 # 4. Load sentiment data (statement, projection) 
 # ----------------------------------------------
