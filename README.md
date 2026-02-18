@@ -32,27 +32,7 @@ The project is divided into **two main modules**: time series forecasting and tr
 * [Financial Sentiment Analysis](experimentation_result/sentiment_analysis.md) – Evaluates document embeddings on gold and MOVE market indices.
 
 ---
-
-# RNNs & Short-Term Volatility Forecasting
-</div>
-
-### Theoretical Roadmap
-
-| Model               | Key Features                                 | Mathematical Insight                      |
-| ------------------- | -------------------------------------------- | ----------------------------------------- |
-| **MLP**             | Foundation of deep learning                  | $y = f(Wx + b)$                           |
-| **Backpropagation** | Optimizes network via gradient descent       | Chain rule across layers                  |
-| **RNN**             | Sequential dependencies                      | $h_t = σ(W_h h_{t-1} + W_x x_t + b)$      |
-| **LSTM**            | Long-term dependency retention               | $c_t = f_t ⊙ c_{t-1} + i_t ⊙ \tilde{c}_t$ |
-| **GRU**             | Simplified LSTM                              | Combined gates, fewer parameters          |
-| **ResNet**          | Skip connections prevent vanishing gradients | $y = F(x, W_i) + x$                       |
-| **ODE-RNN**         | Continuous-time sequence modeling            | $dh/dt = f(h, t)$                         |
-
-**Focus:** Intuitive explanations, derivations, and a roadmap of knowledge for sequential modeling.
-
----
-
-### Application: Nasdaq Intraday Volatility Forecasting
+## Application: Nasdaq Intraday Volatility Forecasting 
 
 * **Goal:** Predict 5-minute ahead log variance of Nasdaq Composite returns ($t+2$ horizon).
 
@@ -80,7 +60,7 @@ The calibrated forecast is translated into dynamic exposure via quantile-based l
 * High predicted volatility → reduced exposure.
 * Smoothed over time: $w_t^{smooth} = \alpha w_t + (1-\alpha) w_{t-1}^{smooth}$ to reduce turnover.
 
-**Performance Comparison:**
+### Performance Result
 
 | Strategy                            | Sharpe | Sortino | Calmar | Volatility |
 | ----------------------------------- | ------ | ------- | ------ | ---------- |
@@ -97,19 +77,23 @@ The calibrated forecast is translated into dynamic exposure via quantile-based l
 * Volatility timing increases realized volatility slightly.
 * Forecasting improves variance predictability but does **not** yield superior portfolio efficiency.
 * The signal serves primarily as a **risk-scaling mechanism**, not alpha generation.
----
-# Transformer Models & Financial Sentiment Analysis
-</div>
-
+ 
 ### Theoretical Roadmap
 
-| Model                     | Key Features                          | Core Equation                                  |
-| ------------------------- | ------------------------------------- | ---------------------------------------------- |
-| **Transformer (Encoder)** | Self-attention, sequence dependencies | `Attention(Q,K,V) = softmax(Q^T K / √d_k) V`   |
-| **BERT**                  | Pre-trained contextual embeddings     | Masked LM & Next Sentence Prediction           |
-| **FinBERT**               | Domain-adapted BERT for finance       | Specialized embeddings for financial sentiment |
+| Model               | Key Features                                 | Mathematical Insight                      |
+| ------------------- | -------------------------------------------- | ----------------------------------------- |
+| **MLP**             | Foundation of deep learning                  | $y = f(Wx + b)$                           |
+| **Backpropagation** | Optimizes network via gradient descent       | Chain rule across layers                  |
+| **RNN**             | Sequential dependencies                      | $h_t = σ(W_h h_{t-1} + W_x x_t + b)$      |
+| **LSTM**            | Long-term dependency retention               | $c_t = f_t ⊙ c_{t-1} + i_t ⊙ \tilde{c}_t$ |
+| **GRU**             | Simplified LSTM                              | Combined gates, fewer parameters          |
+| **ResNet**          | Skip connections prevent vanishing gradients | $y = F(x, W_i) + x$                       |
+| **ODE-RNN**         | Continuous-time sequence modeling            | $dh/dt = f(h, t)$                         |
 
-### Application
+**Focus:** Intuitive explanations, derivations, and a roadmap of knowledge for sequential modeling.
+
+---
+## Application : Transformer Models & Financial Sentiment 
 
 * **Goal:** Quantify the short-term impact of FOMC statements and projections on MOVE Index and gold prices using hierarchical FinBERT embeddings. Focus is on **intra-month effects** rather than long-term forecasting.
 
@@ -125,44 +109,46 @@ The calibrated forecast is translated into dynamic exposure via quantile-based l
 * **Hierarchical Embedding Method:** Token → Chunk → Paragraph → Document mean pooling ensures robust representations of long texts exceeding BERT’s 512-token limit.
 
 ---
-
 ### Market Impact Analysis
 
-**Monthly Alignment:** Market indices aggregated to month-level averages, mid-month reference ±2 days to handle non-trading days.
+* **Monthly Alignment:** Market indices aggregated to month-level averages, mid-month reference ±2 days to handle non-trading days.
 
-**Event Window Analysis:** ±1–2 days around FOMC releases to assess **immediate market reactions**.
+* **Event Window Analysis:** ±5 days around FOMC releases to assess **immediate market reactions**.
 
-**Forward Stepwise OLS Regression:**
+* **Forward Stepwise OLS Regression:** Train/test split (80%,20%), Variables added based on p-value (`p < 0.05`), Focus on **current month market responses**.
 
-* Train/test split: 80%/20%
-* Variables added based on p-value (`p < 0.05`)
-* Focus on **current month market responses**
+### Performance Result
 
 | Target      | Selected Sentiment Variables                                                                        | R²    |
 | ----------- | --------------------------------------------------------------------------------------------------- | ----- |
 | MOVE Index  | Projection_IntraDocVar, Statement_D_Hawkishness×D_DocShift, Statement_DocShift, Statement_IntraDocVar | 0.628 |
 | Gold Prices | Projection_Hawkishness, Projection_IntraDocVar, Statement_Hawkishness                               | 0.408 |
 
----
-
-### Key Observations
-
-* **MOVE Index:** Strong response to intra-document variability and combined hawkishness × document shift changes. Reaction occurs **within announcement day**, confirming rapid sentiment transmission.
-* **Gold Prices:** Moderate response, primarily to hawkish projections. Statement hawkishness has a negative short-term effect, reflecting risk-adjustment behavior.
-* **Intra-month Analysis:** Cumulative returns around FOMC releases show **immediate effects**, validating the event-driven approach over monthly averaging.
 
 | Target      | Impact Illustration                         |
 | ----------- | ------------------------------------------- |
 | MOVE Index  | ![intra MOVE](experimentation_result/figure/impact_intra_MOVE.png) |
 | Gold Prices | ![intra GOLD](experimentation_result/figure/impact_intra_gold.png) |
 
----
+### Key Observations
 
-**Key Insights:**
-
+* **MOVE Index:** Strong response to intra-document variability and combined hawkishness × document shift changes. Reaction occurs **within announcement day**, confirming rapid sentiment transmission.
+* **Gold Prices:** Moderate response, primarily to hawkish projections. Statement hawkishness has a negative short-term effect, reflecting risk-adjustment behavior.
+* **Intra-month Analysis:** Cumulative returns around FOMC releases show **immediate effects**, validating the event-driven approach over monthly averaging.
 * Hierarchical embeddings capture semantic nuances in long FOMC documents effectively.
 * Sentiment variables explain significant short-term market variance, especially in interest-rate sensitive instruments.
 * Supports **event-based risk monitoring** rather than traditional forecasting models.
+
+
+### Theoretical Roadmap
+
+| Model                     | Key Features                          | Core Equation                                  |
+| ------------------------- | ------------------------------------- | ---------------------------------------------- |
+| **Transformer (Encoder)** | Self-attention, sequence dependencies | `Attention(Q,K,V) = softmax(Q^T K / √d_k) V`   |
+| **BERT**                  | Pre-trained contextual embeddings     | Masked LM & Next Sentence Prediction           |
+| **FinBERT**               | Domain-adapted BERT for finance       | Specialized embeddings for financial sentiment |
+
+---
 
 ---
 
@@ -211,39 +197,3 @@ python src/sentiment_analysis/statement_analysis.py
 - Schmidt, R. M. (2019). Recurrent neural networks: A gentle introduction. *arXiv:1912.05911*.  
 - Turner, R. E. (2023). An introduction to transformers. *arXiv:2304.10557*.  
 - init. (2020). Why BERT has 3 embedding layers. *Medium Blog*.  
-
-Deep-Learning-Roadmap/
-│
-├── data/
-│   ├── embedding/
-│       ├── minutes.pkl
-│       ├── projections.pkl
-│       └── statements.pkl
-│   └── raw/
-│       ├── numerical/
-|           ├── delta_t_tensor.pt
-|           └── X_tensor.pt
-│       ├── text/
-|           ├── minutes
-|           ├── statements
-|           └── projections
-├── docs/
-|   └── Recurrent_Neural_Networks_and_Transformer-encoder.pdf
-├── requirements.txt
-├── src/
-│   ├── models/
-│       ├── RNN
-│           ├── GRU.py
-│           ├── LSTM.py
-│           ├── ODERNN.py
-│           └── main.py
-│       └── ResNet.py
-│   ├── scraper/
-│       ├── scrapers
-│       ├── untils
-│       ├── main.py
-│   └── sentiment_analysis/
-│       ├── embedding.py
-│       ├── statement_analysis.py
-├── README.md
-└── LICENSE
