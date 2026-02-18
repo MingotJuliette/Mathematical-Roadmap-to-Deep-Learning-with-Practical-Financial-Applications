@@ -111,7 +111,7 @@ data["ret"].to_pickle("Deep_learning_gold_stock/data/raw/numerical/ret.pkl")
 
 
 # ---------------------------------------
-# FUNCTIONS 
+# 3. FUNCTIONS 
 # ---------------------------------------
 
 def evaluate_model(y_true, y_pred):
