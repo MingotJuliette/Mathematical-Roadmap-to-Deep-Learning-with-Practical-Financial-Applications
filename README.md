@@ -6,7 +6,7 @@ This project provides an **roadmap for deep learning models**, highlighting both
 
 ### Motivation
 
-* **RNNs & Short-Term Volatility Forecasting:** Financial markets exhibit volatility clustering, abrupt regime shifts, and heteroskedasticity. Traditional linear models such as GARCH(1,1) fail to capture intraday nonlinear dynamics. RNN-based models (LSTM, GRU, ODE-RNN) can learn temporal dependencies and incorporate multiple explanatory features to improve short-term volatility predictions for tactical allocation and risk management.
+* **RNNs & Short-Term Volatility Forecasting:** Financial markets exhibit volatility clustering, abrupt regime shifts, and heteroskedasticity. Traditional linear models such as `GARCH(1,1)` fail to capture intraday nonlinear dynamics. RNN-based models (`LSTM`, `GRU`, `ODE`) can learn temporal dependencies and incorporate multiple explanatory features to improve short-term volatility predictions for tactical allocation and risk management.
 * **Transformer Models & Financial Sentiment Analysis:** Market behavior, including gold and interest rate indices, is sensitive to investor expectations, macroeconomic news, and policy announcements. Transformers provide efficient contextual embedding for textual analysis.
 
 ### Objectives
@@ -21,7 +21,7 @@ The project is divided into **two main modules**: time series forecasting and tr
 
 ## PDF Documentation
 
-* [Recurrent Neural Networks and Transformer-Encoder](doc/Recurrent_Neural_Networks_and_Transformer-encoder.pdf) – Includes step-by-step mathematical derivations, intuition, and examples.
+* [Recurrent Neural Networks and Transformer-Encoder](doc/Recurrent_Neural_Networks_and_Transformer_encoder.pdf) – Includes step-by-step mathematical derivations, intuition, and examples.
 
 ---
 
