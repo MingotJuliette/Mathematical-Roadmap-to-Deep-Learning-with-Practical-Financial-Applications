@@ -166,12 +166,6 @@ The calibrated forecast is translated into dynamic exposure via quantile-based l
 
 ---
 
-If you want, I can also create a **compact, fully README-ready Markdown block** that matches your formatting with all code snippets, equations, and tables ready to drop in—so it visually mirrors the Volatility Forecasting section exactly. Do you want me to do that?
-
-
-
----
-
 ## Python Scripts Overview
 
 | Script                  | Purpose                                          |
