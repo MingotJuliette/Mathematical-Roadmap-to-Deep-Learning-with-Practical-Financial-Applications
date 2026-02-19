@@ -27,7 +27,6 @@ The project is divided into **two main modules**: time series forecasting and tr
 
 ## Experimentation Results
 
-* [ResNet Gradient Flow](experimentation_result/gradient_flow.md) – Explores how skip connections mitigate vanishing gradients.
 * [RNN on Nasdaq Volatility](experimentation_result/RNN_Nasdaq.md) – Predicts short-term Nasdaq intraday volatility using sequential models.
 * [Financial Sentiment Analysis](experimentation_result/sentiment_analysis.md) – Evaluates document embeddings on gold and MOVE market indices.
 
