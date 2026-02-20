@@ -2,20 +2,15 @@
 
 ## Overview
 
-This project provides an **roadmap for deep learning models**, highlighting both their **mathematical foundations** and **practical applications** in financial and textual data analysis.
+This project provides a practical and mathematical roadmap for applying deep learning to financial time series and text, covering RNNs, ODE-RNNs, and transformers, with hands-on applications in short terms volatility forecasting and sentiment analysis of financial statements.
 
 ### Motivation
 
-* **RNNs & Short-Term Volatility Forecasting:** Financial markets exhibit volatility clustering, abrupt regime shifts, and heteroskedasticity. Traditional linear models such as `GARCH(1,1)` fail to capture intraday nonlinear dynamics. RNN-based models (`LSTM`, `GRU`, `ODE`) can learn temporal dependencies and incorporate multiple explanatory features to improve short-term volatility predictions for tactical allocation and risk management.
+* **RNNs & Short-Term Volatility Forecasting:** Nasdaq's stock markets exhibit volatility clustering, abrupt regime shifts, and heteroskedasticity. Traditional linear models such as `GARCH(1,1)` fail to capture intraday nonlinear dynamics. RNN-based models (`LSTM`, `GRU`, `ODE`) can learn temporal dependencies and incorporate multiple explanatory features to improve short-term volatility predictions for tactical allocation and risk management.
 * **Transformer Models & Financial Sentiment Analysis:** Market behavior, including gold and interest rate indices, is sensitive to investor expectations, macroeconomic news, and policy announcements. Transformers provide efficient contextual embedding for textual analysis.
-
-### Objectives
-
-* Present key deep learning models with their **mathematical formulations**.
-* Demonstrate applications in **financial volatility forecasting** and **sentiment analysis**.
-* Compare model performance using standard evaluation metrics.
-
-The project is divided into **two main modules**: time series forecasting and transformer-based sentiment analysis.
+  
+---
+**The project is divided into **two main modules**: time series forecasting and transformer-based sentiment analysis.**
 
 ---
 
@@ -89,31 +84,27 @@ The calibrated forecast is translated into dynamic exposure via quantile-based l
   * **Intra-document Variance:** Dispersion across paragraph embeddings.
   * **Temporal Deltas & Interactions:** First differences ($\Delta$) and interaction terms (e.g., D_Hawkishness × D_DocShift) to capture short-term dynamics.
 
-* **Baseline:** Simple monthly averages of MOVE and gold prices without sentiment features. Shows weak correlation with market movements, justifying the hierarchical embedding approach.
-
 * **Hierarchical Embedding Method:** Token → Chunk → Paragraph → Document mean pooling ensures robust representations of long texts exceeding BERT’s 512-token limit.
 
 ---
 ### Market Impact Analysis
 
 * **Monthly Alignment:** Market indices aggregated to month-level averages, mid-month reference ±2 days to handle non-trading days.
-
-* **Event Window Analysis:** ±5 days around FOMC releases to assess **immediate market reactions**.
+  
+#### Performance Result :
 
 * **Forward Stepwise OLS Regression:** Train/test split (80%,20%), Variables added based on p-value (`p < 0.05`), Focus on **current month market responses**.
-
-### Performance Result
 
 | Target      | Selected Sentiment Variables                                                                        | R²    |
 | ----------- | --------------------------------------------------------------------------------------------------- | ----- |
 | MOVE Index  | Projection_IntraDocVar, Statement_D_Hawkishness×D_DocShift, Statement_DocShift, Statement_IntraDocVar | 0.628 |
 | Gold Prices | Projection_Hawkishness, Projection_IntraDocVar, Statement_Hawkishness                               | 0.408 |
 
+* **Event Window Analysis:** ±5 days around FOMC releases to assess **immediate market reactions**.
 
-| Target      | Impact Illustration                         |
+| MOVE Index       |  Gold Prices                        |
 | ----------- | ------------------------------------------- |
-| MOVE Index  | ![intra MOVE](experimentation_result/figure/impact_intra_MOVE.png) |
-| Gold Prices | ![intra GOLD](experimentation_result/figure/impact_intra_gold.png) |
+|![intra MOVE](experimentation_result/figure/impact_intra_MOVE.png) | ![intra GOLD](experimentation_result/figure/impact_intra_gold.png) |
 
 ### Key Observations
 
@@ -136,7 +127,6 @@ The calibrated forecast is translated into dynamic exposure via quantile-based l
 | `ResNet.py`             | Investigate skip connections & gradient issues   |
 | `embedding.py`          | Generate document embeddings & sentiment metrics |
 | `analysis.py` | Predict short-term movements in MOVE or gold     |
-| `main.py`               | Data scraping and preprocessing                  |
 
 ---
 
