@@ -95,14 +95,12 @@ This motivates the use of **RNN architectures** (LSTM, GRU, ODE-RNN), which can 
   
 ---
 
-# Python modelisation
-
----
+# B - Python modelisation
 
 This section describes the implementation of **LSTM**, **GRU**, and **ODE-RNN** architectures in PyTorch and the associated training procedure.
 
 ---
-## Hyperparameters
+## B.1 - Hyperparameters
 
 * **BATCH_SIZE = 32**
   Number of sequences processed simultaneously. Smaller batches introduce gradient noise that may improve generalization under limited data.
@@ -130,7 +128,7 @@ This section describes the implementation of **LSTM**, **GRU**, and **ODE-RNN** 
 
 ---
 
-## Loss Function
+## B.2 - Loss Function & Backpropagation
 
 The regression task predicts:
 
@@ -161,16 +159,7 @@ In PyTorch, this corresponds to:
 ```python
 criterion = nn.HuberLoss(delta=1.0)
 ```
-
 The model is trained via backpropagation through time (BPTT) using the Adam optimizer.
-
----
-
-If you want, I can also produce:
-
-* a cleaner academic-style version suitable for a PDF report,
-* or a shorter GitHub-optimized version focused on clarity and recruiter readability.
-
 
 ```python
 loss = criterion(y_pred, y_batch)
@@ -183,7 +172,7 @@ Gradient clipping is applied to prevent exploding gradients:
 torch.nn.utils.clip_grad_norm_(model.parameters(), GRAD_CLIP)
 ```
 
-## LSTM
+## B.3 - LSTM
 An LSTM maintains two state variables at each time step: a hidden state $h_t ∈ ℝ^h$ and a memory cell $c_t ∈ ℝ^h$. The memory cell stores information additively over time, while gates control how information is written, erased, and read.
 
 Given input $x_t ∈ ℝ^d$, the LSTM update equations are:
@@ -212,7 +201,7 @@ y_pred = fc(final_hidden)
 ```
 Each input sequence is processed time step by time step, and the final hidden state summarizes the temporal information for prediction.
 
-## GRU
+## B.4 - GRU
 
 A GRU maintains a single hidden state $h_t ∈ ℝ^h$. Given input $x_t ∈ ℝ^d$, the GRU update equations are:
 
@@ -237,7 +226,7 @@ y_pred = fc(final_hidden)
 
 Like LSTM, the GRU processes each sequence step by step. The update and reset gates control how information is retained or overwritten, making the model effective for long sequences with fewer parameters than LSTM.
 
-## ODE-RNN
+## B.5 - ODE-RNN
 
 - **Continuous dynamics:** Between observations $t_{i-1}$ and $t_i$, the hidden state $h(t) ∈ ℝ^h$ evolves according to an ODE:
 
@@ -245,7 +234,7 @@ $$\begin{equation}
 \frac{d h(t)}{dt} = f_\theta(h(t)), \quad t \in (t_{i-1}, t_i)
 \end{equation}$$
 
-where $f_θ$ is a neural network defining latent dynamics.
+where $f_\theta$ is a neural network defining latent dynamics.
 
 - **ODE solution:** The hidden state before the next observation is obtained via:
 
@@ -274,7 +263,6 @@ $$\begin{equation}
 \frac{d h(t)}{d t} = f_\theta(h(t))
 \end{equation}$$
 
-
 At observation times, the hidden state is updated via the GRUCell : 
 
 ```python
@@ -285,20 +273,17 @@ for t in range(seq_len):
 residual = self.decoder(h).squeeze() 
 last_return = x[:, -1, 0]
 ```
-
 `torchdiffeq.odeint` solves the ODE for the latent state, and `GRUCell` applies the discrete update. This allows ODE-RNNs to handle irregularly sampled data and capture continuous-time dynamics more naturally than standard RNNs.
 
-### Summary
+## B.5 Summary
 
 - **LSTM:** explicit memory cell with controlled gradient flow via input, forget, and output gates.
 - **GRU:** simpler architecture with single hidden state, still capable of long-term dependency modeling.
 - **ODE-RNN:** continuous-time latent dynamics between observations, discrete updates via RNN cells, suitable for irregular time series.
 
-The Python implementation closely follows the theoretical definitions, using PyTorch modules to manage states and automatic differentiation for training. The Hubert ensures that the models learn to predict the target sequences accurately, while gradient clipping preserves stability over long sequences.
+## B.7 - Results and Prediction
 
-## Results and Prediction
-
-The table below summarizes the performance metrics for the three models on the Bitcoin log-return prediction task. Metrics include MSE, RMSE, MAE, and R², with additional error metrics for LSTM and GRU.
+The table below summarizes the performance metrics for the three models on the Nasdaq volatility prediction task. Metrics include MSE, RMSE, MAE, and R².
 
 | Model    | MSE     | RMSE    | MAE     | R²      |
 |----------|---------|---------|---------|---------|
@@ -306,44 +291,36 @@ The table below summarizes the performance metrics for the three models on the B
 | GRU      | 0.7706  | 0.8778  | 0.6544  | 0.1131  |
 | LSTM     | 0.7519  | 0.8671  | 0.6473  | 0.1346  |
 
+### B.7.1 - Predictions vs True Values
 
-### Predictions vs True Values
-
-The plots below show predicted versus true log-return values for each model. They are aligned horizontally for easier comparison.
+The plots below show predicted versus true volatility forecast $t+2$ values for each model.
 
 | ODE-RNN | LSTM | GRU |
 |---------|------|-----|
 | ![ODE-RNN Prediction](figure/ODERNN.png) | ![LSTM Prediction](figure/LSTM.png) | ![GRU Prediction](figure/GRU.png) |
 
-*Figure: Comparison of predicted vs true Bitcoin log returns for ODE-RNN, LSTM, and GRU models.*
+*Figure: Comparison of predicted vs true Nasdaq volatility forecast for ODE-RNN, LSTM, and GRU models.*
 
-All three models clearly outperform the baseline model `GARCH(1,1)`, confirming ...
+All three models clearly outperform the baseline model `GARCH(1,1)`.
 
 However, performance differences are consistent:
 
 * **LSTM achieves the lowest error metrics (MSE, RMSE, MAE).**
 * It explains the largest fraction of variance (highest R²).
 * It exhibits the strongest correlation with realized volatility.
-* Directional accuracy is tied with GRU and slightly above ODE-RNN.
-
----
-
-For volatility forecast exploitation, **LSTM** is the preferred model. 
-
-It provides:
-* Better magnitude calibration,
-* Higher explanatory power,
-* Equal-best directional performance.
   
 ---
 
-# Forecast Evaluation and Potential Exploitation
-
+**For volatility forecast exploitation, LSTM is the preferred model.** 
+  
 ---
+
+# C - Forecast Evaluation and Potential Exploitation
+
 This section explains how the volatility forecasts are evaluated, calibrated, and translated into a volatility timing strategy. Both the mathematical reasoning and the intuition behind each step are presented.
 
 ---
-## Denormalization
+## C.1 - Denormalization
 
 During training, the target variable was standardized:
 
@@ -362,7 +339,7 @@ y_pred_denorm = y_preds * y_std.item() + y_mean.item()
 
 ---
 
-## From Log-Variance to Variance and Volatility
+## C.2 - From Log-Variance to Variance and Volatility
 
 The model predicts:
 
@@ -382,26 +359,18 @@ var_pred = np.exp(y_pred_denorm)
 vol_pred = np.sqrt(var_pred)
 ```
 
-* Modeling log-variance stabilizes scale and reduces skewness.
-* Exponentiation ensures strictly positive variance forecasts.
-* Square-root transformation produces interpretable volatility levels.
-
 ![forecast_before](figure/forecast_before.png)
 
 ---
 
-## Forecast Quality: QLIKE Loss
+## C.3 - Forecast Quality: QLIKE Loss 
 
-The primary evaluation metric is **QLIKE**, defined as:
+Quasi-likelihood estimation is one way of allowing for overdispersion, that is, greater variability in the data than would be expected from the statistical model used.
+
+* The primary evaluation metric is **QLIKE**, defined as:
 
 `QLIKE` = $\mathbb{E}\left[
 \frac{\sigma_t^2}{\hat{\sigma}_t^2}\log\left(\frac{\sigma_t^2}{\hat{\sigma}_t^2}\right) - 1\right]$
-
-Properties:
-
-* Strictly consistent for variance forecasting.
-* Penalizes underestimation more than overestimation.
-* Robust to noise in realized variance.
 
 Before calibration:
 
@@ -413,7 +382,7 @@ This indicates that the model captures structure but is miscalibrated in magnitu
 
 ---
 
-## Mincer–Zarnowitz Calibration
+## C.4 - Mincer–Zarnowitz Calibration
 
 To correct scale bias, we run the regression:
 
@@ -450,14 +419,14 @@ This confirms the model contains exploitable information but requires rescaling.
 
 
 ---
-## Volatility Timing Strategy
+# D - Volatility Timing Strategy
 
-The calibrated variance forecast is converted into a forward-looking volatility estimate and mapped into dynamic portfolio exposure.  
+The calibrated variance forecast is converted into a forward-looking volatility estimate and mapped into dynamic exposure.  
 Since the model predicts $t+2$, realized returns are shifted accordingly to eliminate look-ahead bias: $r_{t+2}$
 
 ---
 
-### 1. Forecast Transformation
+## D.1 - Forecast Transformation & Horizon Alignment
 
 The calibrated conditional variance $\$hat{\sigma}^2_{t+2}$ is transformed into volatility:$\hat{\sigma}_{t+2} = \sqrt{\hat{\sigma}^2_{t+2}}$
 
@@ -465,13 +434,11 @@ This produces a tradable forward-looking risk signal.
 
 ---
 
-### 2. Horizon Alignment
-
 Because forecasts target $t+2$, returns are aligned to ensure that exposure at time $t$ only uses information available at that date. This prevents forward information leakage.
 
 ---
 
-### 3. Quantile-Based Allocation Rule
+## D.2 - Quantile-Based Allocation Rule
 
 Predicted volatility is ranked into empirical quantiles and mapped into bounded leverage weights:
 
@@ -489,19 +456,11 @@ To reduce turnover, weights are smoothed:$w_t^{smooth} = \alpha w_t + (1-\alpha)
 
 ---
 
-### 4. Strategy Returns
+## D.3 - Strategy Returns & Overall Assessment results
 
 Strategy performance is computed as: $R_t^{strategy} = w_t \cdot r_t$
 
 Annualization assumes 78 intraday periods per trading day.
-
----
-
-Below is a more synthetic but rigorous interpretation of the results.
-
----
-
-## Overall Assessment
 
 | Strategy                              | Sharpe | Sortino | Calmar | Volatility |
 | ------------------------------------- | ------ | ------- | ------ | ---------- |
@@ -510,25 +469,19 @@ Below is a more synthetic but rigorous interpretation of the results.
 
 ![strategy](figure/strategy.png)
 
-Buy & Hold dominates across all risk-adjusted metrics while exhibiting lower realized volatility. The signal functions primarily as a risk-scaling mechanism rather than a source of alpha.
+### D.3.1 - Observations & Discussions: 
 
+* Buy & Hold strategie : betting that the asset’s long-term value will increase, and are ignoring short-term volatility.
+* Buy & Hold dominates across all risk-adjusted metrics while exhibiting lower realized volatility.
+* The signal functions primarily as a risk-scaling mechanism rather than a source of alpha.
 ---
-### Sharpe Ratio
-
 The lower Sharpe (0.38 vs 0.43) indicates inferior return per unit of total volatility.
 Although exposure is reduced in high-vol regimes, the strategy sacrifices upside participation without achieving sufficient risk reduction.
 
-### Sortino Ratio
-
+---
 The weaker Sortino (0.49 vs 0.57) suggests that downside risk is not materially improved.
 The volatility forecast captures dispersion, but not necessarily asymmetric negative returns or crash episodes.
 
-### Calmar Ratio
-
+---
 The lower Calmar (0.21 vs 0.28) implies that maximum drawdowns are not effectively mitigated.
 If volatility timing were economically powerful, one would expect a clear improvement in drawdown-adjusted performance. This is not observed.
-
-### Realized Volatility
-
-Counterintuitively, the timing strategy exhibits higher realized volatility.
-This is likely driven by leveraged exposure during low-volatility regimes (weight = 1.5), which mechanically increases variance when conditions reverse.
