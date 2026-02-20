@@ -1,0 +1,38 @@
+\begin{center}
+\begin{tabular}{lclc}
+\toprule
+\textbf{Dep. Variable:}                            & MOVE\_monthly\_avg & \textbf{  R-squared:         } &     0.628   \\
+\textbf{Model:}                                    &        OLS         & \textbf{  Adj. R-squared:    } &     0.619   \\
+\textbf{Method:}                                   &   Least Squares    & \textbf{  F-statistic:       } &     70.41   \\
+\textbf{Date:}                                     &  Fri, 20 Feb 2026  & \textbf{  Prob (F-statistic):} &  7.78e-35   \\
+\textbf{Time:}                                     &      15:15:45      & \textbf{  Log-Likelihood:    } &   -751.23   \\
+\textbf{No. Observations:}                         &          172       & \textbf{  AIC:               } &     1512.   \\
+\textbf{Df Residuals:}                             &          167       & \textbf{  BIC:               } &     1528.   \\
+\textbf{Df Model:}                                 &            4       & \textbf{                     } &             \\
+\textbf{Covariance Type:}                          &     nonrobust      & \textbf{                     } &             \\
+\bottomrule
+\end{tabular}
+\begin{tabular}{lcccccc}
+                                                   & \textbf{coef} & \textbf{std err} & \textbf{t} & \textbf{P$> |$t$|$} & \textbf{[0.025} & \textbf{0.975]}  \\
+\midrule
+\textbf{const}                                     &    -204.4552  &      157.210     &    -1.301  &         0.195        &     -514.830    &      105.919     \\
+\textbf{FOMC\_Projection\_IntraDocVar}             &    -331.9540  &       35.023     &    -9.478  &         0.000        &     -401.099    &     -262.809     \\
+\textbf{Statement\_D\_Hawkishness\_x\_D\_DocShift} &    3.859e+04  &     6828.410     &     5.651  &         0.000        &     2.51e+04    &     5.21e+04     \\
+\textbf{FOMC\_Statement\_DocShift}                 &    8138.8148  &     2525.585     &     3.223  &         0.002        &     3152.627    &     1.31e+04     \\
+\textbf{FOMC\_Statement\_IntraDocVar}              &    1321.8031  &      561.860     &     2.353  &         0.020        &      212.538    &     2431.068     \\
+\bottomrule
+\end{tabular}
+\begin{tabular}{lclc}
+\textbf{Omnibus:}       & 21.198 & \textbf{  Durbin-Watson:     } &    0.640  \\
+\textbf{Prob(Omnibus):} &  0.000 & \textbf{  Jarque-Bera (JB):  } &   29.193  \\
+\textbf{Skew:}          &  0.729 & \textbf{  Prob(JB):          } & 4.58e-07  \\
+\textbf{Kurtosis:}      &  4.396 & \textbf{  Cond. No.          } & 4.93e+03  \\
+\bottomrule
+\end{tabular}
+%\caption{OLS Regression Results}
+\end{center}
+
+Notes: \newline
+ [1] Standard Errors assume that the covariance matrix of the errors is correctly specified. \newline
+ [2] The condition number is large, 4.93e+03. This might indicate that there are \newline
+ strong multicollinearity or other numerical problems.
