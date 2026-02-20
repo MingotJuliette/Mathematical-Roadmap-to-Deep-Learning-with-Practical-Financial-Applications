@@ -101,5 +101,5 @@ def creat_data(df_1, df_2, index, name) : # GC=F  & ^MOVE
     merged_monthly = pd.DataFrame(monthly_rows)
 
     # Calculate data and others features
-    merged_monthly = metrics(merged_monthly, corr_threshold=0.2, target_col=f"{name}_monthly_avg")
+    merged_monthly = metrics(merged_monthly)
     return merged_monthly, merged, data
