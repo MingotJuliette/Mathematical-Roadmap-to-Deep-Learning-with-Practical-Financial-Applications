@@ -1,4 +1,6 @@
-# **Deep Learning Mathematical Roadmap & Applications**
+<h1 align="center" style="background:#00008B; color:white; padding:20px; border-radius:12px;">
+**Deep Learning Mathematical Roadmap & Applications**
+</h1>
 
 ## Overview
 
@@ -14,13 +16,13 @@ This project provides a practical and mathematical roadmap for applying deep lea
 
 ---
 
-## PDF Documentation
+### PDF Documentation
 
 * [Recurrent Neural Networks and Transformer-Encoder](doc/Recurrent_Neural_Networks_and_Transformer_encoder.pdf) – Includes step-by-step mathematical derivations, intuition, and examples.
 
 ---
 
-## Experimentation Results
+### Experimentation Results
 
 * [RNN on Nasdaq Volatility](experimentation_result/RNN_Nasdaq.md) – Predicts short-term Nasdaq intraday volatility using sequential models.
 * [Financial Sentiment Analysis](experimentation_result/sentiment_analysis.md) – Evaluates document embeddings on gold and MOVE market indices.
