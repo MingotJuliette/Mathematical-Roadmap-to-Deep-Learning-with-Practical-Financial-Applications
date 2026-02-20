@@ -34,7 +34,7 @@ This project provides a practical and mathematical roadmap for applying deep lea
 
 * **Baseline:** `GARCH(1,1)` for comparison:
   $$\sigma_t^2 = \omega + \alpha , \epsilon_{t-1}^2 + \beta , \sigma_{t-1}^2$$
-  Poor baseline metrics (MSE ≈ 347.55, R² ≈ –50.42) justify using RNN architectures.
+  Poor baseline metrics (MSE ≈ 8.092726, R² ≈ -0.3279) justify using RNN architectures.
 
 * **LSTM** : notably outperforms the GARCH(1,1) baseline in both MSE = 0.86 and R² = 0.13, and is therefore selected as the core model for the subsequent volatility timing strategy.
 
