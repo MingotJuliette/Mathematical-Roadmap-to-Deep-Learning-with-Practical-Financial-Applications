@@ -239,9 +239,12 @@ The model explains a substantial portion of variance with an **R² of 0.628**. K
 
 The intra-month impact chart illustrates that the cumulative MOVE response around FOMC statements is concentrated within the announcement window, confirming the immediate effect of sentiment variables rather than a delayed response.
 
-| OLS | impact-intra |
-|---------|------|
-| ![intra GOLD](figure/OLS_MOVE.png) | ![intra GOLD](figure/impact_intra_MOVE.png) |
+
+| impact-intra |
+|---------|
+| ![intra GOLD](figure/impact_intra_MOVE.png) |
+
+*Graph: Intra-month impact of statements on MOVE (cumulative return ±5 day)*
 
 ---
 
@@ -261,11 +264,11 @@ The regression shows an **R² of 0.408**, indicating a moderate explanatory powe
 
 The cumulative impact chart confirms that gold reacts intra-month around the FOMC announcements, again highlighting the immediate effect of sentiment rather than a lagged response.
 
-| OLS | Impact-Intra |
-|---------|------|
-| ![OLS GOLD](figure/OLS_GOLD.png) | ![OLS GOLD](figure/impact_intra_gold.png) |
+| Impact-Intra |
+|---------|
+| ![OLS GOLD](figure/impact_intra_gold.png) |
 
-*Graph: Intra-month impact of statements on Gold (cumulative return ±1 day)*
+*Graph: Intra-month impact of statements on Gold (cumulative return ±5 day)*
 
 ---
 
