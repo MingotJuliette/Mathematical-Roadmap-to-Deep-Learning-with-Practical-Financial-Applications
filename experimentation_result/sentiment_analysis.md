@@ -243,8 +243,6 @@ The intra-month impact chart illustrates that the cumulative MOVE response aroun
 |---------|------|
 | ![intra GOLD](figure/OLS_MOVE.png) | ![intra GOLD](figure/impact_intra_MOVE.png) |
 
-*Graph: Intra-month impact of statements on MOVE (cumulative return ±1 day)*
-
 ---
 
 ### C.2 - Gold Price Analysis
