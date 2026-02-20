@@ -8,7 +8,7 @@ Traditional linear time-series models often struggle to capture short-horizon vo
 
 ---
 
-# Dataset and Target Construction
+# A - Dataset and Target Construction
 
 ---
 
@@ -20,7 +20,16 @@ Due to data availability constraints (Yahoo Finance limits intraday history to a
 * ensuring a usable sample size for model training,
 * capturing intraday volatility structure.
 
-### Target Variable
+## A.1 - 2-Step Horizon justification :
+
+* Each step corresponds to 5 minutes, so ( t+2 ) represents a **10-minute forecasting horizon**.
+* The horizon was selected empirically based on correlation analysis with candidate explanatory variables.
+* Shorter horizons produced weaker explanatory structure.
+* Longer horizons reduced statistical alignment under the limited 60-day sample constraint.
+
+This choice is therefore partly data-driven and constrained by intraday data availability.
+
+### A.1.1 - Target Variable
 
 The prediction target is defined as:
 
@@ -34,18 +43,9 @@ The final modeling target is:
 
 where $\varepsilon$ is a small numerical constant for stability.
 
-## 2-Step Horizon justification :
-
-* Each step corresponds to 5 minutes, so ( t+2 ) represents a **10-minute forecasting horizon**.
-* The horizon was selected empirically based on correlation analysis with candidate explanatory variables.
-* Shorter horizons produced weaker explanatory structure.
-* Longer horizons reduced statistical alignment under the limited 60-day sample constraint.
-
-This choice is therefore partly data-driven and constrained by intraday data availability.
-
 ---
 
-## Feature Choice Justification
+## A.2 - Feature Choice Justification
 
 ![Correlation Matrix](figure/corr_matrix.png)
 
@@ -53,7 +53,7 @@ This choice is therefore partly data-driven and constrained by intraday data ava
 
 Feature selection was initially guided by correlation analysis with the target. However, inclusion in the model is also supported by economic and statistical rationale.
 
-### Selected Features
+### A.2.1 - Selected Features
 
 **1. `log_rv_weekly`** : Log of rolling realized variance over short windows.
 * Captures short-term volatility clustering.
@@ -80,7 +80,7 @@ Feature selection was initially guided by correlation analysis with the target. 
 * Incorporates market expectations about future risk.
 * Provides cross-market information external to realized Nasdaq returns.
 
-## Baseline Model 
+## A.3 - Baseline Model 
 
 Financial markets exhibit volatility clustering, heteroskedasticity, and abrupt regime shifts, especially at intraday frequencies. A natural baseline for modeling conditional variance is the `GARCH(1,1)` model, defined as:
 
@@ -88,7 +88,7 @@ $$\sigma_t^2 = \omega + \alpha , \epsilon_{t-1}^2 + \beta , \sigma_{t-1}^2$$
 
 where $\epsilon_{t-1}$ is the previous return shock and $\sigma_{t-1}^2$ is the previous conditional variance. This captures volatility persistence using past squared returns and past variance.
 
-Fitting a `GARCH(1,1)` to intraday log returns yields poor predictive performance (MSE ≈ 347.55, R² ≈ –50.42), highlighting its limitations for short-horizon forecasts.
+Fitting a `GARCH(1,1)` to intraday log returns yields poor predictive performance (MSE ≈ 8.092726 , R² ≈ -0.3279), highlighting its limitations for short-horizon forecasts.
 
 This motivates the use of **RNN architectures** (LSTM, GRU, ODE-RNN), which can model nonlinear temporal dependencies and leverage multiple explanatory variables to improve intraday volatility predictions.
 
