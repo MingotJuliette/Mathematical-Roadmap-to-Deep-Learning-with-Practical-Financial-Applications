@@ -1,5 +1,5 @@
 <h1 align="center" style="background:#00008B; color:white; padding:20px; border-radius:12px;">
-**Deep Learning Mathematical Roadmap & Applications**
+Deep Learning Mathematical Roadmap & Applications
 </h1>
 
 ## Overview
